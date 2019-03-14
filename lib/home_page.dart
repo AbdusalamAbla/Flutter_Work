@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'pages/all.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'dart:io';
+import 'package:flutter_work/model/scp_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 class NavigationIconView {
    final Widget _icon;
   final Color _color;
@@ -101,7 +103,7 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo>
   int _currentIndex = 0;
   BottomNavigationBarType _type = BottomNavigationBarType.shifting;
   List<NavigationIconView> _navigationViews;
-
+   final CounterModel model=CounterModel();
   @override
   void initState() {
     super.initState();
@@ -117,12 +119,8 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo>
   }
   @override
   Widget build(BuildContext context) {
-    var pages=[
-      AlarmPage(),
-      MusicPage(),
-      CloudPage(),
-      NotesPage(),
-      EventPage()];
+    
+    
     final BottomNavigationBar botNavBar = BottomNavigationBar(
       items: _navigationViews
           .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
@@ -141,10 +139,25 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo>
     );
 
     return Scaffold(
-      body:  pages[_currentIndex],
+      body:  _pageController(_currentIndex),
       bottomNavigationBar: botNavBar,
     );
   }
+
+   _pageController(int index){
+         switch (index) {
+           case 0: return  ScopedModel<CounterModel>(
+             model: model,
+             child: AlarmPage(model: model,),
+           ) ;break;
+            case 1:return MusicPage();break;
+            case 2:return CloudPage();break;
+            case 3:return NotesPage();break;
+            case 4:return EventPage();break;
+           default:break;
+         }
+  }
+  
   Future<void> _getPermission() async{
     if (Platform.isAndroid) {
      bool _readPermission=await SimplePermissions.checkPermission(Permission.ReadExternalStorage);

@@ -12,7 +12,7 @@ class SongList extends StatefulWidget{
 _SongListState createState()=>_SongListState();
 }
 class _SongListState extends State<SongList> {
-  
+  bool isFounding=false;
   @override
   Widget build(BuildContext context) {
     return getBody();
@@ -28,7 +28,7 @@ class _SongListState extends State<SongList> {
   @override 
   void initState(){
     super.initState();
-    _initSongList();
+    
   }
 
   @override
@@ -40,10 +40,8 @@ class _SongListState extends State<SongList> {
    
 
 getBody() {
-    if (_songList.length ==0) {
-      return new Center(child: new CircularProgressIndicator());
-    } else {
-      return Scrollbar(
+  if(_songList.length!=0){
+    return Scrollbar(
       child: ListView.builder(
         controller: controller,
         itemCount: _songList.length!=0?_songList.length:1,
@@ -51,8 +49,19 @@ getBody() {
             return buildListViewItem(_songList[index]);
         }
     )
-    );
-    }
+  );
+  }else if(!isFounding){return
+        Center(
+          child: new RaisedButton(child: Text('查找本地歌曲'),
+        onPressed: ((){
+            setState(() {isFounding=true; });
+              _initSongList();
+          }),
+         ),
+        );
+  }else{
+    return  new Center(child: new CircularProgressIndicator());
+  }
   }
   buildListViewItem(FileSystemEntity file){
     return  Column(
@@ -85,7 +94,9 @@ Future<void> _initSongList() async {
     List result = await compute(_findFileInDir, path);
     setState(() {
       _songList = result;
+      isFounding=false;
     });
+    
   }
 
 //Stati method for running on other isolates.

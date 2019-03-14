@@ -21,15 +21,16 @@ void main() {
   final store = new Store<int>(counterReducer, initialState: 0);
 
   runApp(new FlutterReduxApp(
+    title: 'Flutter Redux Demo',
     store: store,
   ));
 }
 
 class FlutterReduxApp extends StatelessWidget {
   final Store<int> store;
-  
+  final String title;
 
-  FlutterReduxApp({Key key, this.store}) : super(key: key);
+  FlutterReduxApp({Key key, this.store, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +42,11 @@ class FlutterReduxApp extends StatelessWidget {
       store: store,
       child: new MaterialApp(
         theme: new ThemeData.dark(),
+        title: title,
         home: new Scaffold(
-          
+          appBar: new AppBar(
+            title: new Text(title),
+          ),
           body: new Center(
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,

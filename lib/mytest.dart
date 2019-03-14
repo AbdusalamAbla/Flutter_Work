@@ -85,7 +85,7 @@ class _TestDemoState extends State<TestDemo>
   @override
   Widget build(BuildContext context) {
     var pages=[
-      AlarmPage(),
+      // AlarmPage(mode,),
       AVBloc(),
       CloudPage(),
       NotesPage(),
