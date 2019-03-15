@@ -1,12 +1,14 @@
-// Copyright 2016 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'pages/all.dart';
+
 import 'package:simple_permissions/simple_permissions.dart';
-import 'dart:io';
-import 'package:flutter_work/model/scp_model.dart';
+
+import 'pages/all.dart';
+import 'model/scp_model.dart';
+
+
+
 import 'package:scoped_model/scoped_model.dart';
 class NavigationIconView {
    final Widget _icon;
@@ -93,22 +95,23 @@ class CustomInactiveIcon extends StatelessWidget {
   }
 }
 
-class BottomNavigationDemo extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  _BottomNavigationDemoState createState() => _BottomNavigationDemoState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _BottomNavigationDemoState extends State<BottomNavigationDemo>
+class _MainPageState extends State<MainPage>
     with TickerProviderStateMixin {
   int _currentIndex = 0;
-  BottomNavigationBarType _type = BottomNavigationBarType.shifting;
   List<NavigationIconView> _navigationViews;
    final CounterModel model=CounterModel();
+   final MusicFileModel songModel=MusicFileModel();
   @override
   void initState() {
     super.initState();
     _getPermission();
     _initNavigationView();
+    songModel.initSongList();
   }
 
   @override
@@ -126,7 +129,7 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo>
           .map<BottomNavigationBarItem>((NavigationIconView navigationView) => navigationView.item)
           .toList(),
       currentIndex: _currentIndex,
-      type: _type,
+      type: BottomNavigationBarType.shifting,
       //iconSize: 4.0,
       onTap: (int index) {
         setState(() {
@@ -145,16 +148,26 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo>
   }
 
    _pageController(int index){
-         switch (index) {
-           case 0: return  ScopedModel<CounterModel>(
+      switch (index) {
+        case 0: 
+            return  ScopedModel<CounterModel>(
              model: model,
              child: AlarmPage(model: model,),
-           ) ;break;
-            case 1:return MusicPage();break;
-            case 2:return CloudPage();break;
-            case 3:return NotesPage();break;
-            case 4:return EventPage();break;
-           default:break;
+           );break;
+
+        case 1:
+            return ScopedModel<MusicFileModel>(
+             model: songModel,
+             child: MusicPage(songModel: songModel,),
+           );break;
+        
+        case 2:return CloudPage();break;
+        
+        case 3:return NotesPage();break;
+        
+        case 4:return EventPage();break;
+        
+        default:break;
          }
   }
   

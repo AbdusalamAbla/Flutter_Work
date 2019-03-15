@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'main_page.dart';
 
 void main() => runApp(new MyApp());
 
@@ -12,13 +12,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         accentColor: Colors.black,
       ),
-      home:  new BottomNavigationDemo(),
-      
-      // new TestDemo()
-      // new AVBloc()
-      // new MyNewPage()
-      // new BottomNavigationDemo(),
-      
+      home:  new MainPage(),
     );
   }
 }

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'music_page_search.dart';
 import 'music_file.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter_work/model/scp_model.dart';
 class MusicPage extends StatefulWidget{
+  final MusicFileModel songModel;
+  MusicPage({@required this.songModel});
   @override
-  _MusicPageState createState()=>_MusicPageState();
+  _MusicPageState createState()=>_MusicPageState(songModel: songModel);
 }
 class _MusicPageState extends State<MusicPage>{
-  
+  final MusicFileModel songModel;
+  _MusicPageState({@required this.songModel});
   int _lastIntegerSelected;
   @override
   Widget build(BuildContext context) {
@@ -31,7 +36,10 @@ class _MusicPageState extends State<MusicPage>{
           ),
       ],
       ),
-      body: SongList()
+      body: ScopedModel<MusicFileModel>(
+             model: songModel,
+             child: SongList(songModel: songModel,),
+           )
     );
   }
 
