@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:isolate';
-import 'dart:io';
-
-import 'package:path/path.dart';
-import 'dart:async';
 void main() {
   runApp(new SampleApp());
 }
@@ -57,7 +53,7 @@ class _SampleAppPageState extends State<SampleAppPage> {
       itemCount: widgets.length,
       itemBuilder: (BuildContext context, int index) {
         return new Padding(padding: new EdgeInsets.all(10.0), 
-                       child: new Text("Row ${widgets[index]["title"]}"));;
+                       child: new Text("Row ${widgets[index]["title"]}"));
       });
     }
   }

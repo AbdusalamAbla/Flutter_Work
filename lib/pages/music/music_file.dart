@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_work/model/scp_model.dart';
 import 'package:scoped_model/scoped_model.dart';
-
+import 'package:flutter_work/model/model.dart';
 class SongList extends StatefulWidget{
  final MusicFileModel songModel;
  SongList({@required this.songModel});
@@ -23,7 +23,7 @@ class _SongListState extends State<SongList> {
   }
    
   //Variables
-  List<FileSystemEntity> _songList=[];
+  List<LocalMusic> _songList=[];
   ScrollController controller = ScrollController();
   //////////////////////////////////////////////////////////////
 
@@ -61,23 +61,32 @@ getBody() {
       });
     });
     return  new Center(child: new CircularProgressIndicator());
+  }else if (songModel.songList.length<1) {
+    return new Center(
+      child: RaisedButton(onPressed: (){
+      songModel.getSongListfromLocal();
+      setState(() {
+       _songList=songModel.songList; 
+      });
+    },child: Text('获取本地歌曲'),),
+    );
   }
 }
 
 
 
-  buildListViewItem(FileSystemEntity file){
+  buildListViewItem(LocalMusic music){
     return  Column(
         children: <Widget>[
           ListTile(
             title: Row(
               children: <Widget>[
-                Expanded(child: Text(file.path.substring(file.parent.path.length + 1))),
+                Expanded(child: Text(  '${music.title}'  )),//file.path.substring(file.parent.path.length + 1)
                  Container()   
               ],
             ),
             subtitle:  Text(
-                    '${getFileLastModifiedTime(file)}  ${getFileSize(file)}',
+                    '${music.modify}  ${music.size}',
                     style: TextStyle(fontSize: 12.0),
                   ),
           trailing:  null ,
@@ -91,21 +100,4 @@ getBody() {
         ],
       );
   }
-    getFileSize(FileSystemEntity file){
-    int _fileSize=File(file.resolveSymbolicLinksSync()).lengthSync();
-    if (_fileSize<1024) {
-      return '${_fileSize.toStringAsFixed(2)}B';
-    }else if (1024<=_fileSize&&_fileSize<1048576) {
-      return '${(_fileSize/1024).toStringAsFixed(1)}KB';
-    }else if(1048576<_fileSize&&_fileSize<1073741824){
-      return '${(_fileSize/1024/1024).toStringAsFixed(1)}MB';
-    }
-  }
-getFileLastModifiedTime(FileSystemEntity file) {
-    DateTime dateTime = File(file.resolveSymbolicLinksSync()).lastModifiedSync();
-
-    String time =
-        '${dateTime.year}-${dateTime.month < 10 ? 0 : ''}${dateTime.month}-${dateTime.day < 10 ? 0 : ''}${dateTime.day} ${dateTime.hour < 10 ? 0 : ''}${dateTime.hour}:${dateTime.minute < 10 ? 0 : ''}${dateTime.minute}';
-    return time;
-  } 
 }

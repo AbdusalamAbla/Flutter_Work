@@ -1,6 +1,42 @@
-class Music {
+import 'package:json_annotation/json_annotation.dart';
+
+part 'model.g.dart';
+
+abstract class ModelBase {
+   String type;
+      int id;
+  String title;
+  String path;
+  String modify;
+  String size;
+}
+
+@JsonSerializable()
+class LocalMusic extends ModelBase {
+  
+  LocalMusic({this.id,this.title,this.path,this.modify,this.size}){
+   type='music';
+  }
+final int id;
+ final String title;
+ final String path;
+ final String modify;
+
+ final String size;
+
+
+ factory LocalMusic.fromJson(Map<String,dynamic> json)=>_$LocalMusicFromJson(json);
+
+ Map<String,dynamic> toJson()=>_$LocalMusicToJson(this);
+}
+
+
+
+
+
+class NetMusic {
  
-Music({
+NetMusic({
     this.id,
     this.title,
     this.url, 
@@ -25,7 +61,7 @@ Music({
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Music && runtimeType == other.runtimeType && id == other.id;
+      other is NetMusic && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -35,11 +71,11 @@ Music({
     return 'Music{id: $id, title: $title, url: $url, album: $album, artist: $artist}';
   }
 
-  static Music fromMap(Map map) {
+  static NetMusic fromMap(Map map) {
     if (map == null) {
       return null;
     }
-    return Music(
+    return NetMusic(
         id: map["id"],
         title: map["title"],
         url: map["url"],
