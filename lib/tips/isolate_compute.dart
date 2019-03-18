@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 class ComputeDemo{
@@ -12,8 +11,8 @@ class ComputeDemo{
     return count;
   }
 
-  Future<void> _onPressed() async {
-    int result = await compute(loop, 100);
+  Future<void> onPressed() async {
+     await compute(loop, 100);
     
   }
 

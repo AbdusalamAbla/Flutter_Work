@@ -1,7 +1,7 @@
-import 'dart:io';
+
 
 import 'package:sqflite/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:path/path.dart';
 import 'package:flutter_work/model/model.dart';
 const  String dbName = 'flutterWork.db';
@@ -37,7 +37,7 @@ class SQLServer{
      await database.transaction((txn) async {
        int id = await txn.rawInsert(
       'INSERT INTO $tableName(title, path,modify, size) VALUES("${model.title}", "${model.path}", "${model.modify}","${model.size}")');
-    
+        print('insert:$id');
 }); 
   }
   
@@ -62,7 +62,7 @@ class SQLServer{
     path = join(databasesPath, dbName);
     database=await openDatabase(path);
    int count = await database.rawDelete('DELETE FROM     music_table WHERE id > 0');
-   
+   print('delete$count');
     
   }
 

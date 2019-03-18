@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_work/model/scp_model.dart';
-import 'dart:convert';
 import 'package:flutter_work/service/db_service.dart';
 import 'package:flutter_work/model/model.dart';
 
@@ -16,9 +15,8 @@ class _AlarmPageState extends State<AlarmPage>{
    _AlarmPageState(this.model);
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
-    // _onPressed();
   }
 
   @override

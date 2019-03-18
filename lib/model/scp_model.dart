@@ -47,7 +47,6 @@ class MusicFileModel extends Model {
     _songList = await compute(_findFileInDir, path);
     // }else{
 
-          LocalMusic music;
           for (LocalMusic item in _songList) {
             sqlServer.addLocalFile(item);
           }

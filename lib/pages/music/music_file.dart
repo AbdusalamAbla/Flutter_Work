@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_work/model/scp_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_work/model/model.dart';
+import 'music_playing.dart';
 class SongList extends StatefulWidget{
  final MusicFileModel songModel;
  SongList({@required this.songModel});
@@ -50,7 +50,8 @@ getBody() {
         itemCount: _songList.length!=0?_songList.length:1,
         itemBuilder: (BuildContext context,int index){
             return buildListViewItem(_songList[index]);
-        })
+        }),
+
         );
       }
     );
@@ -79,6 +80,9 @@ getBody() {
     return  Column(
         children: <Widget>[
           ListTile(
+            onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                    return new MusicPlay(music: music);
+                  })),
             title: Row(
               children: <Widget>[
                 Expanded(child: Text(  '${music.title}'  )),//file.path.substring(file.parent.path.length + 1)
@@ -98,6 +102,7 @@ getBody() {
             ),
           )
         ],
+        
       );
   }
 }
