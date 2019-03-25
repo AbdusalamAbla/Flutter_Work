@@ -14,15 +14,18 @@ typedef void OnError(Exception exception);
 enum PlayerState { stopped, playing, paused }
 
 class MusicPlay extends StatefulWidget {
-  final LocalMusic music;
-  MusicPlay({this.music});
+  final int index;
+  final List<LocalMusic> playList;
+  MusicPlay({this.playList,this.index});
   @override
-  _MusicPlayState createState() => new _MusicPlayState(music: music);
+  _MusicPlayState createState() => new _MusicPlayState(playList: playList,index: index);
 }
 
 class _MusicPlayState extends State<MusicPlay> {
-  _MusicPlayState({this.music});
-  final LocalMusic music;
+  _MusicPlayState({this.playList,this.index});
+  final int index;
+  final List<LocalMusic> playList;
+  int _currentIndex;
   Duration duration;
   Duration position;
  
@@ -62,6 +65,7 @@ class _MusicPlayState extends State<MusicPlay> {
 
   void initAudioPlayer() {
     audioPlayer = new AudioPlayer();
+    _currentIndex=index-1;
     _positionSubscription = audioPlayer.onAudioPositionChanged
         .listen((p) => setState(() => position = p));
     _audioPlayerStateSubscription =
@@ -84,15 +88,40 @@ class _MusicPlayState extends State<MusicPlay> {
   }
 
   Future play() async {
-   await audioPlayer.play(music.path, isLocal: true);
+   await audioPlayer.play(playList[_currentIndex].path, isLocal: true);
     setState(() {
       playerState = PlayerState.playing;
     });
   }
 
   Future _playLocal() async {   
-    await audioPlayer.play(music.path, isLocal: true);
+    await audioPlayer.play(playList[_currentIndex].path, isLocal: true);
     setState(() => playerState = PlayerState.playing);
+  }
+
+  Future playNext()async{
+    _currentIndex++;
+    if (_currentIndex==playList.length) {
+      _currentIndex=0;
+    }
+    stop();
+    await audioPlayer.play(playList[_currentIndex].path,isLocal: true);
+    setState(() {
+     playerState=PlayerState.playing; 
+    });
+  }
+
+Future playLast()async{
+    _currentIndex--;
+    if (_currentIndex<0) {
+      _currentIndex=playList.length-1;
+    }
+    stop();
+    await audioPlayer.play(playList[_currentIndex].path,isLocal: true);
+    setState(() {
+     playerState=PlayerState.playing; 
+    });
+    
   }
 
   Future pause() async {
@@ -117,6 +146,8 @@ class _MusicPlayState extends State<MusicPlay> {
 
   void onComplete() {
     setState(() => playerState = PlayerState.stopped);
+    _currentIndex++;
+    play();
   }
 
   Future<Uint8List> _loadFileBytes(String url, {OnError onError}) async {
@@ -147,13 +178,17 @@ class _MusicPlayState extends State<MusicPlay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Play Page'),
+      ),
       body: Container(
         alignment: Alignment.bottomCenter,
       child: new Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    new Text(music.title,style:new TextStyle(fontSize: 20)),
+                    new Text(playList[_currentIndex].title,style:new TextStyle(fontSize: 30)),
+                    new Text(playList[_currentIndex].artist,style: new TextStyle(color: Colors.grey,fontSize: 16),),
                     new Material(child: _buildPlayer()),
                     localFilePath != null
                         ? new Text(localFilePath)
@@ -182,22 +217,34 @@ class _MusicPlayState extends State<MusicPlay> {
       child: new Column(mainAxisSize: MainAxisSize.min, children: [
         new Row(mainAxisSize: MainAxisSize.min, children: [
           new IconButton(
+            onPressed: ()=>playLast(),
+            iconSize: 40.0,
+            icon: new Icon(Icons.keyboard_arrow_left),
+            color: Colors.cyan,
+          ),
+          new IconButton(
               onPressed: isPlaying ? null : () => play(),
-              iconSize: 64.0,
+              iconSize: 40.0,
               icon: new Icon(Icons.play_arrow),
               color: Colors.cyan),
           new IconButton(
               onPressed: isPlaying ? () => pause() : null,
-              iconSize: 64.0,
+              iconSize: 40.0,
               icon: new Icon(Icons.pause),
               color: Colors.cyan
               ),
           new IconButton(
               onPressed: isPlaying || isPaused ? () => stop() : null,
-              iconSize: 64.0,
+              iconSize: 40.0,
               icon: new Icon(Icons.stop),
               color: Colors.cyan
               ),
+          new IconButton(
+            onPressed: ()=>playNext(),
+            iconSize: 40.0,
+            icon: new Icon(Icons.keyboard_arrow_right),
+            color: Colors.cyan,
+          ),
         ]),
         duration == null
             ? new Container()

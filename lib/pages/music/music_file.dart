@@ -81,7 +81,7 @@ getBody() {
         children: <Widget>[
           ListTile(
             onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-                    return new MusicPlay(music: music);
+                    return new MusicPlay(playList: _songList,index: music.id,);
                   })),
             title: Row(
               children: <Widget>[
@@ -90,7 +90,7 @@ getBody() {
               ],
             ),
             subtitle:  Text(
-                    '${music.modify}  ${music.size}',
+                    '${music.artist}    ${music.size}',
                     style: TextStyle(fontSize: 12.0),
                   ),
           trailing:  null ,

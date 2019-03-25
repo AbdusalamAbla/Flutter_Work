@@ -88,6 +88,12 @@ class MusicFileModel extends Model {
          switch (listStr[1]) {
            case 'mp3':
            case 'MP3':
+           case 'Mp3':
+           case 'flac':
+           case 'Flac':
+           case "FLAC":
+           case 'wav':
+           case 'Wav':
            if (!(File(file.resolveSymbolicLinksSync()).lengthSync()<1048576)) {
              songFileList.add(file);
            }   break;
@@ -96,9 +102,13 @@ class MusicFileModel extends Model {
         }
       }
       for (var i = 0; i < songFileList.length; i++) {
+        String totalName=songFileList[i].path.substring(songFileList[i].parent.path.length + 1);
+         var k1=totalName.split(' - ');
+         var k2=k1[1].split('.');
         songList.add(new LocalMusic(
           id: i+1,
-          title:songFileList[i].path.substring(songFileList[i].parent.path.length + 1),
+          title:k2[0],
+          artist: k1[0],
           path: songFileList[i].path,
           modify: getFileLastModifiedTime(songFileList[i]),
           size: getFileSize(songFileList[i])));

@@ -31,12 +31,12 @@ class SQLServer{
     onCreate: (Database db, int version) async {
   // When creating the db, create the table
       await db.execute(
-      'CREATE TABLE $tableName (id INTEGER PRIMARY KEY,  title TEXT,path Text,modify Text,size Text)');
+      'CREATE TABLE $tableName (id INTEGER PRIMARY KEY,  title TEXT,artist TEXT,path Text,modify Text,size Text)');
      });
      
      await database.transaction((txn) async {
        int id = await txn.rawInsert(
-      'INSERT INTO $tableName(title, path,modify, size) VALUES("${model.title}", "${model.path}", "${model.modify}","${model.size}")');
+      'INSERT INTO $tableName(title,artist,path,modify, size) VALUES("${model.title}", "${model.artist}","${model.path}", "${model.modify}","${model.size}")');
         print('insert:$id');
 }); 
   }
@@ -49,7 +49,7 @@ class SQLServer{
     onCreate: (Database db, int version) async {
   // When creating the db, create the table
       await db.execute(
-      'CREATE TABLE music_table (id INTEGER PRIMARY KEY,  title TEXT,path Text,modify Text,size Text)');
+      'CREATE TABLE music_table (id INTEGER PRIMARY KEY, title TEXT,artist TEXT,path Text,modify Text,size Text)');
      });
     List<Map> list = await database.rawQuery('SELECT * FROM music_table ');
     print('query:${list.length}');

@@ -6,6 +6,7 @@ abstract class ModelBase {
    String type;
       int id;
   String title;
+  String artist;
   String path;
   String modify;
   String size;
@@ -14,14 +15,14 @@ abstract class ModelBase {
 @JsonSerializable()
 class LocalMusic extends ModelBase {
   
-  LocalMusic({this.id,this.title,this.path,this.modify,this.size}){
+  LocalMusic({this.id,this.title,this.artist,this.path,this.modify,this.size}){
    type='music';
   }
-final int id;
+ final int id;
  final String title;
+ final String artist;
  final String path;
  final String modify;
-
  final String size;
 
 

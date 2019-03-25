@@ -9,7 +9,9 @@ class MusicPage extends StatefulWidget{
   @override
   _MusicPageState createState()=>_MusicPageState(songModel: songModel);
 }
+enum SortBy { title, artist, modifytime, lastListen }
 class _MusicPageState extends State<MusicPage>{
+  
   final MusicFileModel songModel;
   _MusicPageState({@required this.songModel});
   int _lastIntegerSelected;
@@ -35,6 +37,26 @@ class _MusicPageState extends State<MusicPage>{
               }
             },
           ),
+        PopupMenuButton(
+          itemBuilder: (BuildContext context)=><PopupMenuEntry<SortBy>>[
+            const PopupMenuItem<SortBy>(
+      value: SortBy.artist,
+      child: Text('Artist'),
+    ),
+    const PopupMenuItem<SortBy>(
+      value: SortBy.lastListen,
+      child: Text('LastListen'),
+    ),
+    const PopupMenuItem<SortBy>(
+      value: SortBy.modifytime,
+      child: Text('Modifytime'),
+    ),
+    const PopupMenuItem<SortBy>(
+      value: SortBy.title,
+      child: Text('Title'),
+    ),
+          ]
+        )
       ],
       ),
       body: ScopedModel<MusicFileModel>(
