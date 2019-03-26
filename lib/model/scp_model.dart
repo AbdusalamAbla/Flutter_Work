@@ -1,5 +1,4 @@
 import 'package:scoped_model/scoped_model.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CounterModel extends Model {
   int _counter = 0;

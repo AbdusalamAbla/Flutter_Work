@@ -1,8 +1,6 @@
-import 'dart:io';
+
 
 import 'package:flutter/material.dart';
-
-import 'package:simple_permissions/simple_permissions.dart';
 
 import 'pages/all.dart';
 import 'model/scp_model.dart';
@@ -144,7 +142,7 @@ class _MainPageState extends State<MainPage>
     );
   }
 
- Widget  _pageController(int index){
+ _pageController(int index){
       switch (index) {
         case 0: 
             return  ScopedModel<CounterModel>(
