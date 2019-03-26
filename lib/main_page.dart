@@ -105,13 +105,10 @@ class _MainPageState extends State<MainPage>
   int _currentIndex = 0;
   List<NavigationIconView> _navigationViews;
    final CounterModel model=CounterModel();
-   final MusicFileModel songModel=MusicFileModel();
   @override
   void initState() {
     super.initState();
-    _getPermission();
     _initNavigationView();
-    songModel.initSongList();
   }
 
   @override
@@ -147,7 +144,7 @@ class _MainPageState extends State<MainPage>
     );
   }
 
-   _pageController(int index){
+ Widget  _pageController(int index){
       switch (index) {
         case 0: 
             return  ScopedModel<CounterModel>(
@@ -156,10 +153,11 @@ class _MainPageState extends State<MainPage>
            );break;
 
         case 1:
-            return ScopedModel<MusicFileModel>(
-             model: songModel,
-             child: MusicPage(songModel: songModel,),
-           );break;
+            return Scaffold(
+appBar: AppBar(
+title: Text('空页面'),
+),
+            );break;
         
         case 2:return CloudPage();break;
         
@@ -171,15 +169,6 @@ class _MainPageState extends State<MainPage>
          }
   }
   
-  Future<void> _getPermission() async{
-    if (Platform.isAndroid) {
-     bool _readPermission=await SimplePermissions.checkPermission(Permission.ReadExternalStorage);
-     if (!_readPermission) {
-       await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
-     }
-     
-    }
-  }
 
 
   _initNavigationView(){

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_work/model/scp_model.dart';
-import 'package:flutter_work/service/db_service.dart';
-import 'package:flutter_work/model/model.dart';
 
 class AlarmPage extends StatefulWidget{
  final   CounterModel model;
@@ -37,10 +35,7 @@ class _AlarmPageState extends State<AlarmPage>{
                 );
               },
             ),
-            RaisedButton(
-        onPressed: _incrementCounter,
-        child: Text('Increment Counter'),
-        ),
+          
               ],
               
             ),
@@ -59,24 +54,6 @@ class _AlarmPageState extends State<AlarmPage>{
 
   }
 
- _incrementCounter() async {    
-
-
-  SQLServer sqlServer=new SQLServer();
-    List<Map> results=await sqlServer.query();
-    LocalMusic music;
-  
-    for (Map item in results) {
-       music=LocalMusic.fromJson(item);
-       print(music.title);
-    }
-    
-    // print(music.title);
-   
-
-      
-   
-
-}
+ 
 }
 
